@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div style="display: flex; flex-direction: column; max-width: 330px; padding: 1rem; margin: auto !important;"
+         class="form-signin w-100 m-auto">
+        <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+        <p>New User? <a href="{% url 'register' %}">Click to Register!</a></p>
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div class="form-floating">
+                {{ form.username }}
+                {{ form.username.label_tag }}
+            </div>
+            {% if form.username.errors %}
+                {% for error in form.username.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            {% endif %}
+            <div class="form-floating">
+                {{ form.password }}
+                {{ form.password.label_tag }}
+            </div>
+            {% if form.password.errors %}
+                {% for error in form.password.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            {% endif %}
+            <p>{{ form.remember_me }} {{ form.remember_me.label_tag }}</p>
+            <p>{{ form.submit }}</p>
+        </form>
+    </div>
+{% endblock %}
