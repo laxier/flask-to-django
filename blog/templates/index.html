@@ -1,39 +1,42 @@
 {% extends "base.html" %}
-
 {% block content %}
-<main class="container">
-    <h1>Hi, {{ current_user.username }}!</h1>
-    <form action="" method="post" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
-        {{ form.post.label(class_="col-sm-2 col-form-label") }}<br>
-        {{ form.post(class_="form-control") }}
-        {% for error in form.post.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-        <div style="display: flex; justify-content: space-between;">
-            {{ form.upload.label() }}
-            {{ form.upload() }}
-        </div>
-        {% for error in form.upload.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-        <p>{{ form.submit(class_="btn btn-outline-secondary") }}</p>
-    </form>
+    <main class="container">
+        <h1>Hi, {{ user.username }}!</h1>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.post.label_tag }}<br>
+            {{ form.post }}
+            {% for error in form.post.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            <div style="display: flex; justify-content: space-between;">
+                {{ form.image.label_tag }}
+                {{ form.image }}
+            </div>
+            {% for error in form.image.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            <p>
+                <button type="submit" class="btn btn-outline-secondary">Submit</button>
+            </p>
+        </form>
 
-    {% for post in posts %}
-    <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
-        <h1 class="display-4 fst-italic" style="font-size: 30px;">{{ moment(post.timestamp).format('lll')}} {{
-            post.author.username }} says: </h1>
-        <p class="lead my-3" style="font-size: 20px;">{{ post.body }}</p>
-        {% if post.image_path %}
-        <p class="lead my-3" style="font-size: 20px;"><img class="post-image" src="../{{post.image_path}}" alt="Post Image"></p>
-        {% endif %}
-        <a href="/post/{{post.id}}" class="btn btn-outline-secondary">Комментарии</a>
-        {% if current_user.id == post.author.id or current_user.username == 'admin'%}
-        <a href="/delete/{{post.id}}" class="btn btn-outline-secondary">Delete</a>
-        {% endif %}
-        <!--                  <p class="lead mb-0"><a href="#" class="text-body-emphasis fw-bold">Continue reading...</a></p>-->
-    </div>
-    {% endfor %}
-</main>
+        {% for post in posts %}
+            <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+                <h1 class="display-4 fst-italic" style="font-size: 30px;">
+                    {{ post.timestamp|date:"DATETIME_FORMAT" }} {{ post.author.username }} says:</h1>
+                <p class="lead my-3" style="font-size: 20px;">{{ post.body }}</p>
+                {% load static %}
+                {% if post.image_path %}
+                    <p class="lead my-3" style="font-size: 20px;">
+                        <img class="post-image" src="{% static 'images/' %}{{ post.image_path }}" alt="Post Image">
+                    </p>
+                {% endif %}
+                {% if user.id == post.author.id or user.username == 'admin' %}
+                    <a href="{% url 'delete_post' post.id %}" class="btn btn-outline-secondary">Delete</a>
+                    {#                    <a href="{% url 'delete_post' post.id %}" class="btn btn-outline-secondary">Delete</a>#}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </main>
 {% endblock %}

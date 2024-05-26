@@ -83,12 +83,9 @@
         }
 
     </style>
-    {#    {{ bootstrap.load_css() }}#}
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     {% block styles %}
     {% endblock %}
-    {#    {{ moment.include_moment() }}#}
-    {#    {{ moment.locale(auto_detect=True) }}#}
 </head>
 <div class="container">
     <header class="d-flex flex-wrap align-items-center  mb-4 border-bottom"
@@ -104,27 +101,25 @@ padding-bottom: 1%; padding-top: 1%; justify-content:space-around;">
             <li><a href="/neuro/rnn" class="nav-link px-2 link-dark">RNN</a></li>
             <li><a href="/neuro/gradient" class="nav-link px-2 link-dark">Градиентный Спуск</a></li>
         </ul>
-        {% if current_user.is_anonymous %}
+        {% if user.is_anonymous %}
             <a class="btn btn-outline-primary me-2" href="{% url 'login' %}">Login</a>
         {% else %}
-            <a class="btn btn-outline-primary me-2" href="{% url 'logout' %}"> {{ current_user.username }} <br>
+            <a class="btn btn-outline-primary me-2" href="{% url 'logout' %}"> {{ user.username }} <br>
                 Log-out</a>
         {% endif %}
     </header>
 </div>
 
 <body class="d-flex flex-column h-100" style="font-family: cursive;">
-{#{% with messages = get_flashed_messages() %}#}
-{#{% if messages %}#}
-{#<div class="container">#}
-{#    <ul>#}
-{#        {% for message in messages %}#}
-{#        <li>{{ message }}</li>#}
-{#        {% endfor %}#}
-{#    </ul>#}
-{#</div>#}
-{#{% endif %}#}
-{#{% endwith %}#}
+<div class="container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
 {% block content %}{% endblock %}
 <script src="{% static 'js/bootstrap.bundle.js' %}"></script>
 {% block scripts %}{% endblock %}
