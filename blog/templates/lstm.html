@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <a href="{% url 'lstm_study' %}" class="btn btn-outline-secondary">Переобучить</a>
+        <div class="table-container">
+            <div class="table-row heading">
+                {% for key, value in data.0.items %}
+                    <div class="row-item">{{ key }}</div>
+                {% endfor %}
+            </div>
+            {% for record in data %}
+                <div class="table-row">
+                    {% for key, value in record.items %}
+                        <div class="row-item">{{ value }}</div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <a href="/neuro/gradient/study" class="btn btn-outline-secondary">переобучить</a>
+        <p>Реальное значение:</p>
+        <div class="table-container">
+            {% for key, value in real %}
+                <div class="table-row">
+                    <div class="row-item">{{ key }}</div>
+                    <div class="row-item">{{ value }}</div>
+                </div>
+            {% endfor %}
+        </div>
+        <p>Предсказанное значение:</p>
+        <div class="table-container">
+            <div class="table-row">
+                <div class="row-item">time_spent</div>
+                <div class="row-item">{{ pred }}</div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
