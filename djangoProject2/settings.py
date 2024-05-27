@@ -94,7 +94,8 @@ DATABASES = {
         'ENGINE': 'djongo',
         'NAME': 'blog',
         'CLIENT': {
-            'host': 'localhost',
+            # 'host': 'localhost',
+            'host': 'host.docker.internal',
             'port': 27017,
         }
     }
