@@ -4,22 +4,22 @@ from django.utils import timezone
 from bson import ObjectId
 
 
-# class User(AbstractUser):
-#     # Add custom fields here if needed
-#     groups = models.ManyToManyField(
-#         Group,
-#         related_name='blog_users',  # Unique related_name
-#         blank=True,
-#         help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
-#         related_query_name='user',
-#     )
-#     user_permissions = models.ManyToManyField(
-#         Permission,
-#         related_name='blog_users',  # Unique related_name
-#         blank=True,
-#         help_text='Specific permissions for this user.',
-#         related_query_name='user',
-#     )
+class User(AbstractUser):
+    # Add custom fields here if needed
+    groups = models.ManyToManyField(
+        Group,
+        related_name='blog_users',  # Unique related_name
+        blank=True,
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+        related_query_name='user',
+    )
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='blog_users',  # Unique related_name
+        blank=True,
+        help_text='Specific permissions for this user.',
+        related_query_name='user',
+    )
 
 
 class Post(models.Model):
