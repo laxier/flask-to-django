@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from blog import views
 from django.urls import path
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', views.index, name='index'),
@@ -26,4 +27,10 @@ urlpatterns = [
     path('logout/', views.logout, name='logout'),
     path('post/delete/<str:post_id>/', views.delete_post, name='delete_post'),
     path('info/', views.info, name='info'),
+    path('neuro/gradient/study/', views.gradient_study, name='gradient_study'),
+    path('neuro/gradient/', views.gradient, name='gradient'),
+    path('neuro/lstm/', views.lstm, name='lstm'),
+    path('neuro/lstm/study/', views.lstm_study, name='lstm_study'),
+    path('neuro/rnn/', views.rnn, name='rnn'),
+    path('neuro/rnn/study/', views.rnn_study, name='rnn_study'),
 ]

@@ -10,7 +10,12 @@ from .models import Post
 from django.conf import settings
 import os
 
+from gradient import grad_random, study_grad
+from lstm import study_lstm, get_real_pericted
+from rnn import predict_spam, study_rnn
 
+
+@login_required
 def index(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
@@ -120,3 +125,42 @@ def register(request):
 def logout(request):
     auth_logout(request)
     return redirect(index)
+
+
+def gradient_study(request):
+    messages.info(request, study_grad(database_name='blog', collection_name='gradient'))
+    return redirect('gradient')
+
+
+def gradient(request):
+    random_data_processed, y_random_pred = grad_random(database_name='blog', collection_name='gradient')
+    if isinstance(random_data_processed, dict):
+        random_data_processed = random_data_processed.items()
+    return render(request, 'gradient.html', {'real': random_data_processed, 'pred': y_random_pred})
+
+
+def lstm(request):
+    start_date = '2015-02-11'
+    end_date = '2015-03-01'
+    df = get_real_pericted(start_date, end_date, 'blog', 'btc_usd')
+    dict_data = df.to_dict(orient='records')
+    return render(request, 'lstm.html', {'data': dict_data})
+
+
+def lstm_study(request):
+    study_result = study_lstm(10, 'blog', 'btc_usd')  # Assuming 1 is passed as an epoch argument
+    messages.success(request, study_result)
+    return redirect('lstm')
+
+
+def rnn(request):
+    predict = predict_spam(num_samples=10, database_name='blog', collection_name='rnn')
+    return render(request, 'RNN.html', {'predict': predict})
+
+
+def rnn_study(request):
+    # epos = request.GET.get('epos')
+    epos = 10
+    study_result = study_rnn(epos, 'blog', 'rnn')
+    messages.success(request, study_result)
+    return redirect('rnn')
